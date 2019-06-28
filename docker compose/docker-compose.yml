@@ -1,0 +1,42 @@
+version: '2'
+
+networks:
+  resdetask:
+    driver: bridge
+
+services:
+ nexus:
+  image: sonatype/nexus3
+  container_name: admiring_ritchie
+  ports:
+    - "8081:8083"
+  networks:
+    - resdetask
+  volumes:
+    - "/\Users\Daniel\nexus"
+
+ jenkins:
+  image: jenkins/jenkins:lts 
+  container_name: affectionate_dijkstra
+  ports:
+    - "8080"
+  networks:
+    - resdetask
+  volumes:
+    - "\Users\Daniel\Jenkins"
+ 
+ sonarqube:
+  image: sonarqube
+  container_name: sonarqube
+  restart: always
+  ports:
+   - "9000:9000"
+  networks:
+    - resdetask
+
+  environment:
+   - SONARQUBE_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
+   - SONARQUBE_JDBC_USERNAME=sonar
+   - SONARQUBE_JDBC_PASSWORD=sonar
+  volumes:
+    - "\Users\Daniel\sonar"
